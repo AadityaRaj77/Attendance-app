@@ -3,10 +3,11 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 require('dotenv').config()
 const app = express()
+app.use(cors())
 app.use(express.json())
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
-    useNewUnifiedTopology: true
+    useUnifiedTopology: true
 })
 app.use("/api/auth", require("./routes/auth.js"))
 
@@ -17,5 +18,5 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+    console.log(`Example app listening on port http://localhost:${port}`)
 })

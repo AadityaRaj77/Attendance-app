@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Login from "./components/Login-admin.jsx";
+import Login from "./components/Login.jsx";
 import AdminDashb from "./components/AdminDashb.jsx";
 import UserDashb from "./components/UserDashb.jsx";
 

@@ -6,7 +6,9 @@ function Login() {
   useEffect(() => {
     const isHidden = localStorage.getItem("hidden");
     if (isHidden === "true" && ref.current) {
-      ref.current.style.display = "hidden";
+      ref.current.style.display = "none";
+    } else if (ref.current) {
+      ref.current.style.display = "block";
     }
   }, []);
   const loginAdmin = () => {
@@ -15,11 +17,20 @@ function Login() {
       localStorage.setItem("hidden", "true");
     }
   };
+  const loginuser = () => {
+    if (ref.current) {
+      ref.current.style.display = "block";
+      localStorage.setItem("hidden", "false");
+    }
+  };
   return (
     <>
       <h1 className="text-4xl text-center mb-50">Attendance Portal</h1>
       <div className="flex justify-self-center gap-4">
-        <button className="bg-blue-400 cursor-pointer p-2 text-white rounded-2xl">
+        <button
+          className="bg-blue-400 cursor-pointer p-2 text-white rounded-2xl"
+          onClick={loginuser}
+        >
           User
         </button>
         <button

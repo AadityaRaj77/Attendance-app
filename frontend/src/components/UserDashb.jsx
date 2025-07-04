@@ -1,7 +1,11 @@
 import React from "react";
 
 function UserDashb() {
-  return <div>UserDashb</div>;
+  return (
+    <>
+      <div>UserDashb</div>
+    </>
+  );
 }
 
 export default UserDashb;

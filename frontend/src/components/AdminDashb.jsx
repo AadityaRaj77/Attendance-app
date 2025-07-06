@@ -1,118 +1,97 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function AdminDashb() {
+export default function AdminDashb() {
+  const navigate = useNavigate();
+  const [summary, setSummary] = useState({ present: 0, total: 0 });
+  const [records, setRecords] = useState([]); // list of { user, status }
+  const [filterDate, setFilterDate] = useState(
+    new Date().toISOString().slice(0, 10)
+  );
+  const getToken = () => localStorage.getItem("token");
+  useEffect(() => {
+    const fetchSummary = async () => {
+      try {
+        const res = await fetch(
+          "http://localhost:3000/api/attendance/summary",
+          {
+            headers: { Authorization: "Bearer " + getToken() },
+          }
+        );
+        if (res.status === 401) return navigate("/");
+        const data = await res.json();
+        setSummary(data); // { present: X, total: Y }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchSummary();
+  }, [navigate]);
+
+  useEffect(() => {
+    const fetchRecords = async () => {
+      try {
+        const res = await fetch(
+          `http://localhost:3000/api/attendance?date=${filterDate}`,
+          { headers: { Authorization: "Bearer " + getToken() } }
+        );
+        if (res.status === 401) return navigate("/");
+        const data = await res.json();
+        setRecords(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchRecords();
+  }, [filterDate, navigate]);
+
   return (
-    <>
-      <div className="flex-col justify-items-center mt-16 m-2 space-y-8">
-        <div className=" bg-amber-100 justify-items-center space-y-8 p-4 rounded-lg">
-          <h1 className="text-2xl">Today's Attendance</h1>
-          <p className="text-3xl font-semibold">69/120</p>
+    <div className="p-6 max-w-3xl mx-auto space-y-8">
+      <div className="flex gap-4">
+        <div className="flex-1 bg-amber-100 p-4 rounded-lg text-center">
+          <h2 className="text-xl">Present Today</h2>
+          <p className="text-3xl font-semibold">{summary.present}</p>
         </div>
-        <div className="flex gap-x-4">
-          <div className="justify-items-center bg-amber-100 space-y-6 p-4 rounded-lg">
-            <h1 className="text-xl">Your Attendance</h1>
-            <p className="text-2xl">69</p>
-          </div>
-          <div className="justify-items-center bg-amber-100 space-y-6 p-4 rounded-lg">
-            <h1 className="text-xl">Total Lectures</h1>
-            <p className="text-2xl">70</p>
-          </div>
-        </div>
-        <div className=" bg-amber-100 justify-items-center space-y-8 p-4 rounded-lg">
-          <h1 className="text-2xl">Today's Attendance</h1>
-          <p className="text-3xl font-semibold">69/120</p>
-        </div>
-        <div className="justify-items-center space-y-4">
-          <h1 className="text-2xl">Attendance Record</h1>
-          <div className="flex justify-items-center">
-            <input type="date"></input>
-            <button
-              id="dropdownHoverButton"
-              data-dropdown-toggle="dropdownHover"
-              data-dropdown-trigger="hover"
-              className="text-white bg-amber-700 hover:bg-amber-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-amber-600 dark:hover:bg-amber-700 dark:focus:ring-amber-800"
-              type="button"
-            >
-              Dropdown hover{" "}
-              <svg
-                class="w-2.5 h-2.5 ms-3"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 10 6"
-              >
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="m1 1 4 4 4-4"
-                />
-              </svg>
-            </button>
-            <div
-              id="dropdownHover"
-              class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700"
-            >
-              <ul
-                class="py-2 text-sm text-gray-700 dark:text-gray-200"
-                aria-labelledby="dropdownHoverButton"
-              >
-                <li>
-                  <a
-                    href="#"
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    Dashboard
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    Settings
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    Earnings
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    Sign out
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <table className="table-auto m-4">
-            <tbody>
-              <tr>
-                <td>Present</td>
-                <td>6 July 2025</td>
-              </tr>
-              <tr>
-                <td>Absent</td>
-                <td>5 July 2025</td>
-              </tr>
-              <tr>
-                <td>Absent</td>
-                <td>4 July 2025</td>
-              </tr>
-            </tbody>
-          </table>
+        <div className="flex-1 bg-amber-100 p-4 rounded-lg text-center">
+          <h2 className="text-xl">Total Users</h2>
+          <p className="text-3xl font-semibold">{summary.total}</p>
         </div>
       </div>
-    </>
+      <div className="bg-amber-100 p-4 rounded-lg flex items-center gap-4">
+        <label className="font-medium">Select Date:</label>
+        <input
+          type="date"
+          value={filterDate}
+          onChange={(e) => setFilterDate(e.target.value)} // triggers records fetch
+          className="border p-2 rounded"
+        />
+      </div>
+      <div className="bg-amber-100 p-4 rounded-lg">
+        <h2 className="text-2xl mb-4">Attendance Record</h2>
+        <table className="w-full table-auto border">
+          <thead>
+            <tr>
+              <th className="border p-2">Username</th>
+              <th className="border p-2">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {records.map((rec, i) => (
+              <tr key={i}>
+                <td className="border p-2">{rec.user.username}</td>
+                <td className="border p-2 capitalize">{rec.status}</td>
+              </tr>
+            ))}
+            {records.length === 0 && (
+              <tr>
+                <td colSpan="2" className="text-center p-4">
+                  No records for this date.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 }
-
-export default AdminDashb;

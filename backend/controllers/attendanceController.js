@@ -1,4 +1,4 @@
-const Attendance = require('../models/attendance');
+const Attendance = require('./models/attendance.js');
 
 exports.markAttendance = async (req, res) => {
     const { userId, date, status } = req.body;

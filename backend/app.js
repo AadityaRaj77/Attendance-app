@@ -10,6 +10,7 @@ mongoose.connect(process.env.MONGO_URI, {
     useUnifiedTopology: true
 })
 app.use("/api/auth", require("./routes/auth.js"))
+app.use("/api/attendance", require("./routes/attendance.js"))
 
 const port = 3000
 

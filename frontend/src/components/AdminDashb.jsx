@@ -45,6 +45,35 @@ export default function AdminDashb() {
     fetchRecords();
   }, [filterDate, navigate]);
 
+  const downloadCSVad = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("Not logged in");
+
+      const res = await fetch(
+        "http://localhost:3000/api/attendance/export/all",
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      if (!res.ok) throw new Error("Download failed: " + (await res.text()));
+      const blob = await res.blob();
+
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "all_attendance.csv"; // filename suggestion
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
   return (
     <div className="p-6 max-w-3xl mx-auto space-y-8">
       <div className="flex gap-4">
@@ -65,6 +94,12 @@ export default function AdminDashb() {
           onChange={(e) => setFilterDate(e.target.value)} // triggers records fetch
           className="border p-2 rounded"
         />
+        <button
+          onClick={downloadCSVad}
+          className="ml-4 bg-gray-800 text-white px-4 py-2 rounded"
+        >
+          Download All CSV
+        </button>
       </div>
       <div className="bg-amber-100 p-4 rounded-lg">
         <h2 className="text-2xl mb-4">Attendance Record</h2>

@@ -57,6 +57,33 @@ function UserDashb() {
       alert("Network error");
     }
   };
+  const downloadCSV = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("Not logged in");
+      const res = await fetch(
+        "http://localhost:3000/api/attendance/export/me",
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      if (!res.ok) throw new Error("Download failed: " + (await res.text()));
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "my_attendance.csv";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
   return (
     <>
       <div className="flex-col justify-items-center mt-16 m-2 space-y-8">
@@ -84,6 +111,13 @@ function UserDashb() {
         </div>
         <div className="justify-items-center space-y-4">
           <h1 className="text-2xl">Attendance History</h1>
+          <button
+            onClick={downloadCSV}
+            className="mt-4 bg-gray-800 text-white px-4 py-2 rounded"
+          >
+            Download My CSV
+          </button>
+
           <table className="table-auto m-4">
             <tbody>
               {history.map((rec, idx) => (

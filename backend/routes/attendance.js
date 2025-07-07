@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const Attendance = require("../models/Attendance");
+const Attendance = require("../models/attendance");
 const verifyToken = require("../middleware/verifyToken");
+const { Parser } = require("json2csv");
 
 
 router.post("/", verifyToken, async (req, res) => {
@@ -48,6 +49,30 @@ router.get("/", verifyToken, async (req, res) => {
     res.json(docs);
 });
 
+router.get("/export/me", verifyToken, async (req, res) => {
+    const records = await Attendance.find({ user: req.user.id }).sort("date")
+        .lean().populate("user", "username");
+    const fields = ["user.username", "status", "date", "markedAt"];
+    const csv = new Parser({ fields }).parse(records);
+
+    res.header("Content-Type", "text/csv");
+    res.attachment(`attendance_${req.user.id}.csv`);
+    res.send(csv);
+});
+
+router.get("/export/all", verifyToken, async (req, res) => {
+    if (req.user.role !== "admin")
+        return res.status(403).json({ msg: "Forbidden" });
+
+    const records = await Attendance.find().sort("date")
+        .lean().populate("user", "username");
+    const fields = ["user.username", "status", "date", "markedAt"];
+    const csv = new Parser({ fields }).parse(records);
+
+    res.header("Content-Type", "text/csv");
+    res.attachment(`attendance_all.csv`);
+    res.send(csv);
+});
 
 
 

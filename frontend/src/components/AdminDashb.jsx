@@ -75,58 +75,74 @@ export default function AdminDashb() {
   };
 
   return (
-    <div className="p-6 max-w-3xl mx-auto space-y-8">
-      <div className="flex gap-4">
-        <div className="flex-1 bg-amber-100 p-4 rounded-lg text-center">
-          <h2 className="text-xl">Present Today</h2>
-          <p className="text-3xl font-semibold">{summary.present}</p>
+    <section className="wave-section relative flex flex-col gap-24 md:gap-18 items-center p-4">
+      <div className="air air1"></div>
+      <div className="air air2"></div>
+      <div className="air air3"></div>
+      <div className="air air4"></div>
+
+      <div className="w-full lg:w-1/2 mt-12 mx-auto space-y-8 text-blue-950">
+        <div className="flex gap-4">
+          <div className="flex-1 bg-blue-100 p-4 rounded-xl text-center">
+            <h2 className="text-xl">Present Today</h2>
+            <p className="text-3xl font-semibold">{summary.present}</p>
+          </div>
+          <div className="flex-1 bg-blue-100 p-4 rounded-xl text-center">
+            <h2 className="text-xl">Total Users</h2>
+            <p className="text-3xl font-semibold">{summary.total}</p>
+          </div>
         </div>
-        <div className="flex-1 bg-amber-100 p-4 rounded-lg text-center">
-          <h2 className="text-xl">Total Users</h2>
-          <p className="text-3xl font-semibold">{summary.total}</p>
+        <div className="bg-blue-100 p-4 rounded-xl flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <label className="font-medium text-blue-950">Select Date:</label>
+            <input
+              type="date"
+              value={filterDate}
+              onChange={(e) => setFilterDate(e.target.value)}
+              className="border p-2 rounded text-blue-950 cursor-pointer"
+            />
+          </div>
+
+          <button
+            onClick={downloadCSVad}
+            className="bg-blue-500 hover:bg-blue-600 text-blue-50 font-medium px-4 py-2 cursor-pointer rounded-full sm:rounded-xl"
+          >
+            <img
+              src="https://cdn-icons-png.flaticon.com/128/9131/9131795.png"
+              className="w-6 rounded-full sm:hidden invert"
+            ></img>
+            <p className="hidden sm:block">Download Attendance Record</p>
+          </button>
         </div>
-      </div>
-      <div className="bg-amber-100 p-4 rounded-lg flex items-center gap-4">
-        <label className="font-medium">Select Date:</label>
-        <input
-          type="date"
-          value={filterDate}
-          onChange={(e) => setFilterDate(e.target.value)} // triggers records fetch
-          className="border p-2 rounded"
-        />
-        <button
-          onClick={downloadCSVad}
-          className="ml-4 bg-gray-800 text-white px-4 py-2 rounded"
-        >
-          Download All CSV
-        </button>
-      </div>
-      <div className="bg-amber-100 p-4 rounded-lg">
-        <h2 className="text-2xl mb-4">Attendance Record</h2>
-        <table className="w-full table-auto border">
-          <thead>
-            <tr>
-              <th className="border p-2">Username</th>
-              <th className="border p-2">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {records.map((rec, i) => (
-              <tr key={i}>
-                <td className="border p-2">{rec.user.username}</td>
-                <td className="border p-2 capitalize">{rec.status}</td>
-              </tr>
-            ))}
-            {records.length === 0 && (
+        <div className="bg-blue-100 p-4 rounded-xl">
+          <h2 className="text-2xl mb-4 justify-self-center">
+            Attendance Record
+          </h2>
+          <table className="w-full table-auto border rounded-xl">
+            <thead>
               <tr>
-                <td colSpan="2" className="text-center p-4">
-                  No records for this date.
-                </td>
+                <th className="border p-2">Username</th>
+                <th className="border p-2">Status</th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {records.map((rec, i) => (
+                <tr key={i}>
+                  <td className="border p-2">{rec.user.username}</td>
+                  <td className="border p-2 capitalize">{rec.status}</td>
+                </tr>
+              ))}
+              {records.length === 0 && (
+                <tr>
+                  <td colSpan="2" className="text-center p-4">
+                    No records for this date.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

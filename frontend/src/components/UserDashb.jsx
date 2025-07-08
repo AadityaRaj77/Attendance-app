@@ -9,6 +9,8 @@ function UserDashb() {
   const [tdyStatus, setTdyStatus] = useState(null);
   const [history, setHistory] = useState([]);
 
+  const daysPresent = history.filter((r) => r.status === "present").length;
+  const totalDays = history.length;
   const getToken = () => localStorage.getItem("token");
 
   useEffect(() => {
@@ -104,7 +106,7 @@ function UserDashb() {
         <div className="air air4"></div>
 
         <div className="flex-col justify-items-center mt-12 m-4 w-full md:w-1/2 space-y-4">
-          <div className=" bg-blue-100 justify-items-center space-y-10 p-6 rounded-xl w-full">
+          <div className=" bg-blue-100 border border-blue-50 justify-items-center space-y-10 p-6 rounded-xl w-full">
             <h1 className="text-2xl text-blue-950">
               Today's Attendance, {new Date().toLocaleDateString()}
             </h1>
@@ -117,13 +119,15 @@ function UserDashb() {
             </button>
           </div>
           <div className="flex gap-x-4 w-full">
-            <div className="justify-items-center w-1/2 bg-blue-100 space-y-6 p-4 rounded-lg">
+            <div className="justify-items-center w-1/2 bg-blue-100 border border-blue-50 space-y-6 p-4 rounded-lg">
               <h1 className="text-xl text-blue-950">Your Attendance</h1>
-              <p className="text-2xl text-blue-950 font-medium">69</p>
+              <p className="text-2xl text-blue-950 font-medium">
+                {daysPresent}
+              </p>
             </div>
-            <div className="justify-items-center w-1/2 bg-blue-100 space-y-6 p-4 rounded-lg">
+            <div className="justify-items-center w-1/2 bg-blue-100 border border-blue-50 space-y-6 p-4 rounded-lg">
               <h1 className="text-xl text-blue-950">Total Lectures</h1>
-              <p className="text-2xl text-blue-950 font-medium">70</p>
+              <p className="text-2xl text-blue-950 font-medium">{totalDays}</p>
             </div>
           </div>
           <div className="justify-items-center space-y-4 text-blue-100 w-full">
@@ -133,7 +137,7 @@ function UserDashb() {
             >
               Download My Attendace Record
             </button>
-            <div className="bg-blue-100 p-4 rounded-xl w-full">
+            <div className="bg-blue-100 border border-blue-50 p-4 rounded-xl w-full">
               <h2 className="text-2xl mb-4 justify-self-center text-blue-950">
                 Attendance Record
               </h2>

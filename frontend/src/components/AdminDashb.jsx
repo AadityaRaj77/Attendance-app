@@ -3,30 +3,36 @@ import { useNavigate } from "react-router-dom";
 
 export default function AdminDashb() {
   const navigate = useNavigate();
-  const [summary, setSummary] = useState({ present: 0, total: 0 });
-  const [records, setRecords] = useState([]); // list of { user, status }
+  const [summary, setSummary] = useState({ present: 0, absent: 0, total: 0 });
+  const [records, setRecords] = useState([]);
   const [filterDate, setFilterDate] = useState(
     new Date().toISOString().slice(0, 10)
   );
+
   const getToken = () => localStorage.getItem("token");
   useEffect(() => {
     const fetchSummary = async () => {
       try {
+        console.log("Fetching summary for:", filterDate);
         const res = await fetch(
-          "http://localhost:3000/api/attendance/summary",
-          {
-            headers: { Authorization: "Bearer " + getToken() },
-          }
+          `http://localhost:3000/api/attendance/summary?date=${filterDate}`,
+          { headers: { Authorization: "Bearer " + getToken() } }
         );
         if (res.status === 401) return navigate("/");
+
         const data = await res.json();
-        setSummary(data); // { present: X, total: Y }
+        console.log("Summary data received:", data);
+        setSummary({
+          present: data.present ?? 0,
+          absent: data.absent ?? 0,
+          total: data.total ?? 0,
+        });
       } catch (err) {
-        console.error(err);
+        console.error("Error fetching summary:", err);
       }
     };
     fetchSummary();
-  }, [navigate]);
+  }, [filterDate, navigate]);
 
   useEffect(() => {
     const fetchRecords = async () => {
@@ -64,7 +70,7 @@ export default function AdminDashb() {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "all_attendance.csv"; // filename suggestion
+      a.download = "all_attendance.csv";
       document.body.appendChild(a);
       a.click();
       a.remove();
@@ -83,16 +89,16 @@ export default function AdminDashb() {
 
       <div className="w-full lg:w-1/2 mt-12 mx-auto space-y-8 text-blue-950">
         <div className="flex gap-4">
-          <div className="flex-1 bg-blue-100 p-4 rounded-xl text-center">
+          <div className="flex-1 bg-blue-100 border border-blue-50 p-4 rounded-xl text-center">
             <h2 className="text-xl">Present Today</h2>
             <p className="text-3xl font-semibold">{summary.present}</p>
           </div>
-          <div className="flex-1 bg-blue-100 p-4 rounded-xl text-center">
+          <div className="flex-1 bg-blue-100 border border-blue-50 p-4 rounded-xl text-center">
             <h2 className="text-xl">Total Users</h2>
             <p className="text-3xl font-semibold">{summary.total}</p>
           </div>
         </div>
-        <div className="bg-blue-100 p-4 rounded-xl flex items-center justify-between">
+        <div className="bg-blue-100 border border-blue-50 p-4 rounded-xl flex items-center justify-between">
           <div className="flex items-center gap-4">
             <label className="font-medium text-blue-950">Select Date:</label>
             <input
@@ -114,7 +120,7 @@ export default function AdminDashb() {
             <p className="hidden sm:block">Download Attendance Record</p>
           </button>
         </div>
-        <div className="bg-blue-100 p-4 rounded-xl">
+        <div className="bg-blue-100 border border-blue-50 p-4 rounded-xl">
           <h2 className="text-2xl mb-4 justify-self-center">
             Attendance Record
           </h2>

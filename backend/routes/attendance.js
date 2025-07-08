@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Attendance = require("../models/attendance");
+const User = require("../models/user.js")
 const verifyToken = require("../middleware/verifyToken");
 const { Parser } = require("json2csv");
 
@@ -36,12 +37,36 @@ router.get("/me", verifyToken, async (req, res) => {
         return res.status(500).json({ msg: err.message });
     }
 });
+
 router.get("/summary", verifyToken, async (req, res) => {
-    const today = new Date(); today.setHours(0, 0, 0, 0);
-    const present = await Attendance.countDocuments({ date: today, status: "present" });
-    const total = await User.countDocuments();
-    res.json({ present, total });
+    try {
+        if (req.user.role !== "admin")
+            return res.status(403).json({ msg: "Forbidden" });
+        const dateParam = req.query.date || new Date().toISOString().slice(0, 10);
+        const start = new Date(dateParam);
+        start.setHours(0, 0, 0, 0);
+
+        const end = new Date(start);
+        end.setDate(end.getDate() + 1);
+        const present = await Attendance.countDocuments({
+            date: { $gte: start, $lt: end },
+            status: "present"
+        });
+        const absent = await Attendance.countDocuments({
+            date: { $gte: start, $lt: end },
+            status: "absent"
+        });
+        const total = await require("../models/user").countDocuments();
+
+        res.json({ present, absent, total });
+    } catch (err) {
+        console.error("Summary error:", err);
+        res.status(500).json({ msg: err.message });
+    }
 });
+
+
+
 router.get("/", verifyToken, async (req, res) => {
     const { date } = req.query;
     const d = new Date(date); d.setHours(0, 0, 0, 0);

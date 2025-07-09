@@ -81,13 +81,15 @@ export default function AdminDashb() {
   };
 
   return (
-    <section className="wave-section relative flex flex-col gap-24 md:gap-18 items-center p-4">
-      <div className="air air1"></div>
-      <div className="air air2"></div>
-      <div className="air air3"></div>
-      <div className="air air4"></div>
+    <section className="relative h-screen justify-item-center">
+      <div className="wave-section pointer-events-none relative -z-100">
+        <div className="air air1"></div>
+        <div className="air air2"></div>
+        <div className="air air3"></div>
+        <div className="air air4"></div>
+      </div>
 
-      <div className="w-full lg:w-1/2 mt-12 mx-auto space-y-8 text-blue-950">
+      <div className="w-full lg:w-1/2 mt-12 mx-auto space-y-8 text-blue-950 relative z-0 overflow-auto">
         <div className="flex gap-4">
           <div className="flex-1 bg-blue-100 border border-blue-50 p-4 rounded-xl text-center">
             <h2 className="text-xl">Present Today</h2>
@@ -98,7 +100,7 @@ export default function AdminDashb() {
             <p className="text-3xl font-semibold">{summary.total}</p>
           </div>
         </div>
-        <div className="bg-blue-100 border border-blue-50 p-4 rounded-xl flex items-center justify-between">
+        <div className="bg-blue-100 border border-blue-50 p-4 rounded-xl flex items-center justify-between mb-20">
           <div className="flex items-center gap-4">
             <label className="font-medium text-blue-950">Select Date:</label>
             <input

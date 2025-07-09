@@ -99,24 +99,24 @@ function UserDashb() {
 
   return (
     <>
-      <section className="wave-section relative flex flex-col gap-24 md:gap-18 items-center p-4">
-        <div className="air air1"></div>
-        <div className="air air2"></div>
-        <div className="air air3"></div>
-        <div className="air air4"></div>
-
-        <div className="flex-col justify-items-center mt-12 m-4 w-full md:w-1/2 space-y-4">
+      <div className="relative h-screen justify-items-center">
+        <div
+          className="relative z-0 flex-col justify-items-center mt-12 m-4 w-full md:w-1/2 space-y-4 overflow-auto"
+          /*style={{ height: "100vh", paddingBottom: "100px" }}*/
+        >
           <div className=" bg-blue-100 border border-blue-50 justify-items-center space-y-10 p-6 rounded-xl w-full">
             <h1 className="text-2xl text-blue-950">
               Today's Attendance, {new Date().toLocaleDateString()}
             </h1>
-            <button
-              className="bg-blue-500 text-blue-100 text-xl p-2 rounded-lg cursor-pointer hover:bg-blue-600"
-              ref={ref}
-              onClick={handlePresent}
-            >
-              Mark Attendance
-            </button>
+            <div>
+              <button
+                className="bg-blue-500 text-blue-100 text-xl p-2 rounded-lg cursor-pointer hover:bg-blue-600 justify-self-center"
+                ref={ref}
+                onClick={handlePresent}
+              >
+                Mark Attendance
+              </button>
+            </div>
           </div>
           <div className="flex gap-x-4 w-full">
             <div className="justify-items-center w-1/2 bg-blue-100 border border-blue-50 space-y-6 p-4 rounded-lg">
@@ -131,13 +131,16 @@ function UserDashb() {
             </div>
           </div>
           <div className="justify-items-center space-y-4 text-blue-100 w-full">
-            <button
-              onClick={downloadCSV}
-              className="mt-4 bg-blue-950 text-blue-100 px-4 py-2 rounded cursor-pointer hover:bg-blue-800"
-            >
-              Download My Attendace Record
-            </button>
-            <div className="bg-blue-100 border border-blue-50 p-4 rounded-xl w-full">
+            <div>
+              <button
+                onClick={downloadCSV}
+                className="mt-4 bg-blue-950 text-blue-100 px-4 py-2 rounded cursor-pointer hover:bg-blue-800"
+              >
+                Download My Attendace Record
+              </button>
+            </div>
+
+            <div className="bg-blue-100 border border-blue-50 p-4 rounded-xl w-full mb-12">
               <h2 className="text-2xl mb-4 justify-self-center text-blue-950">
                 Attendance Record
               </h2>
@@ -162,7 +165,13 @@ function UserDashb() {
             </div>
           </div>
         </div>
-      </section>
+        <div className="wave-section pointer-events-none relative -z-100">
+          <div className="air air1"></div>
+          <div className="air air2"></div>
+          <div className="air air3"></div>
+          <div className="air air4"></div>
+        </div>
+      </div>
     </>
   );
 }

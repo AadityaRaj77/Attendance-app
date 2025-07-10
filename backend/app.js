@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const app = express();
+
 app.use(cors({
     origin: ["https://attendance-app-pc5m.vercel.app", "http://localhost:5173"]
 }));
@@ -11,7 +13,6 @@ const Attendance = require('./models/attendance');
 const User = require('./models/user');
 
 require('dotenv').config();
-const app = express();
 
 app.use(cors({
     origin: ["https://attendance-app-pc5m.vercel.app", "http://localhost:5173"]

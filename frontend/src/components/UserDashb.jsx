@@ -18,7 +18,7 @@ function UserDashb() {
     const loadAttendance = async () => {
       try {
         const res = await fetch(
-          `${import.meta.env.VITE_APP_URL}/api/attendance/me`,
+          `${import.meta.env.VITE_API_URL}/api/attendance/me`,
           {
             headers: { Authorization: "Bearer " + getToken() },
           }
@@ -51,7 +51,7 @@ function UserDashb() {
     console.log("Button clicked");
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_APP_URL}/api/attendance`,
+        `${import.meta.env.VITE_API_URL}/api/attendance`,
         {
           method: "POST",
           headers: {
@@ -82,7 +82,7 @@ function UserDashb() {
       const token = localStorage.getItem("token");
       if (!token) throw new Error("Not logged in");
       const res = await fetch(
-        `${import.meta.env.VITE_APP_URL}/api/attendance/export/me`,
+        `${import.meta.env.VITE_API_URL}/api/attendance/export/me`,
         {
           headers: {
             Authorization: "Bearer " + token,

@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "env": {
+    "VITE_API_URL": "https://attendance-app-4cpp.onrender.com"
+  },
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://attendance-app-4cpp.onrender.com/api/:path*"
+    }
+  ]
+}

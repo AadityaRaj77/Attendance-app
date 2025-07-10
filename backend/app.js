@@ -8,7 +8,7 @@ const User = require('./models/user');
 require('dotenv').config();
 const app = express();
 
-app.use(cors());
+app.use(cors({ origin: "https://attendance-app-pc5m.vercel.app/" }));
 app.use(express.json());
 mongoose.set('strictQuery', false);
 mongoose.connect(process.env.MONGO_URI, {

@@ -13,7 +13,7 @@ app.use(cors({
 }));
 
 app.use(express.json());
-mongoose.set('strictQuery', false);
+
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });

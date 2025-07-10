@@ -14,13 +14,13 @@ This app allows users and admins to keep track of attendance and store and downl
 
 ## Deployment
 
-Link - https://attendance-app-eight-pink.vercel.app/
+Link - https://attendance-app-pc5m.vercel.app/
 Frontend on Vercel
 Backend on Render
 
 ## Technologies Used
 
-ReactJS, Tailwind CSS, NodeJS, ExpressJS, MongoDB, JWT, BcryptJS, JSON2CSV, Node-cron.
+ReactJS, Tailwind CSS, NodeJS, ExpressJS, MongoDB, JWT, BcryptJS, JSON2CSV, Cron.
 
 ## Running the Project Locally
 
@@ -44,4 +44,21 @@ JWT_SECRET=mysecretkey
 ADMIN_PASSWORD=admin123
 ```
 
+- Create `.env` file in `frontend` and add
+
+```bash
+VITE_API_URL=http://localhost:3000
+```
+
 - Now, run the frontend and backend with `npm run dev` and `node app.js` respectively.
+
+## Testing
+
+- For Admin login,
+  Username - admin1
+- For User login,
+  Username - student1
+  Password - 123456
+  &
+  Username - student2
+  Password - hello123

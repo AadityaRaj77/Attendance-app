@@ -4,7 +4,7 @@ const cors = require('cors');
 const app = express();
 
 app.use(cors({
-    origin: ["https://attendance-app-pc5m.vercel.app", "http://localhost:5173"]
+    origin: ["https://attendance-app-pc5m.vercel.app/", "http://localhost:5173"]
 }));
 
 app.use(express.json());

@@ -7,18 +7,22 @@ function UserDashb() {
   const navigate = useNavigate();
   const ref = useRef();
   const [tdyStatus, setTdyStatus] = useState(null);
+  //-------------------------------------
   const [history, setHistory] = useState([]);
 
   const daysPresent = history.filter((r) => r.status === "present").length;
   const totalDays = history.length;
   const getToken = () => localStorage.getItem("token");
-
+  //-----------------------------------
   useEffect(() => {
     const loadAttendance = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/attendance/me", {
-          headers: { Authorization: "Bearer " + getToken() },
-        });
+        const res = await fetch(
+          `${import.meta.env.VITE_APP_URL}/api/attendance/me`,
+          {
+            headers: { Authorization: "Bearer " + getToken() },
+          }
+        );
         if (res.status === 401) return navigate("/");
 
         const data = await res.json();
@@ -42,20 +46,22 @@ function UserDashb() {
       ref.current.classList.remove("cursor-pointer");
     }
   }, []);
-
+  //----------------------------------------------
   const handlePresent = async () => {
     console.log("Button clicked");
     try {
-      const res = await fetch("http://localhost:3000/api/attendance", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + getToken(),
-        },
-        body: JSON.stringify({ status: "present" }),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_APP_URL}/api/attendance`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + getToken(),
+          },
+          body: JSON.stringify({ status: "present" }),
+        }
+      );
       const result = await res.json();
-      console.log(69);
       if (!res.ok) return alert(result.msg);
       setTdyStatus("present");
       ref.current.innerText = "Marked";
@@ -70,12 +76,13 @@ function UserDashb() {
       alert("Network error");
     }
   };
+  //---------------------------------------------------------
   const downloadCSV = async () => {
     try {
       const token = localStorage.getItem("token");
       if (!token) throw new Error("Not logged in");
       const res = await fetch(
-        "http://localhost:3000/api/attendance/export/me",
+        `${import.meta.env.VITE_APP_URL}/api/attendance/export/me`,
         {
           headers: {
             Authorization: "Bearer " + token,
@@ -96,7 +103,7 @@ function UserDashb() {
       alert(err.message);
     }
   };
-
+  //-----------------------------------------------
   return (
     <>
       <div className="relative h-screen justify-items-center">

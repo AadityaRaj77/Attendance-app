@@ -15,7 +15,9 @@ export default function AdminDashb() {
       try {
         console.log("Fetching summary for:", filterDate);
         const res = await fetch(
-          `http://localhost:3000/api/attendance/summary?date=${filterDate}`,
+          `${
+            import.meta.env.VITE_APP_URL
+          }/api/attendance/summary?date=${filterDate}`,
           { headers: { Authorization: "Bearer " + getToken() } }
         );
         if (res.status === 401) return navigate("/");
@@ -38,7 +40,7 @@ export default function AdminDashb() {
     const fetchRecords = async () => {
       try {
         const res = await fetch(
-          `http://localhost:3000/api/attendance?date=${filterDate}`,
+          `${import.meta.env.VITE_APP_URL}/api/attendance?date=${filterDate}`,
           { headers: { Authorization: "Bearer " + getToken() } }
         );
         if (res.status === 401) return navigate("/");
@@ -57,7 +59,7 @@ export default function AdminDashb() {
       if (!token) throw new Error("Not logged in");
 
       const res = await fetch(
-        "http://localhost:3000/api/attendance/export/all",
+        `${import.meta.env.VITE_APP_URL}/api/attendance/export/all`,
         {
           headers: {
             Authorization: "Bearer " + token,

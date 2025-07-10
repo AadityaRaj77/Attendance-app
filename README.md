@@ -14,7 +14,9 @@ This app allows users and admins to keep track of attendance and store and downl
 
 ## Deployment
 
-Link -
+Link - https://attendance-app-eight-pink.vercel.app/
+Frontend on Vercel
+Backend on Render
 
 ## Technologies Used
 
@@ -28,10 +30,10 @@ ReactJS, Tailwind CSS, NodeJS, ExpressJS, MongoDB, JWT, BcryptJS, JSON2CSV, Node
 git clone https://github.com/AadityaRaj77/Attendance-app.git
 ```
 
-- Install required packages
+- Install required packages in frontend and backend
 
 ```bash
-npm i
+npm install
 ```
 
 - Create `.env` file in `backend/` and add

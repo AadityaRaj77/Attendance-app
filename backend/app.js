@@ -1,6 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+app.use(cors({
+    origin: ["https://attendance-app-pc5m.vercel.app", "http://localhost:5173"]
+}));
+
+app.use(express.json());
 const cron = require('node-cron');
 const Attendance = require('./models/attendance');
 const User = require('./models/user');
@@ -30,7 +35,10 @@ app.use("/api/attendance", require("./routes/attendance"));
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
-
+app.use((err, req, res, next) => {
+    console.error("Uncaught Error:", err.stack || err);
+    res.status(500).json({ msg: err.message || "Internal Server Error" });
+});
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);

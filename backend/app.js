@@ -1,8 +1,9 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
-require('dotenv').config();
+
 
 app.use(cors({
     origin: ["https://attendance-app-pc5m.vercel.app", "http://localhost:5173"]
@@ -13,10 +14,6 @@ const cron = require('node-cron');
 const Attendance = require('./models/attendance');
 const User = require('./models/user');
 
-
-
-
-app.use(express.json());
 
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,

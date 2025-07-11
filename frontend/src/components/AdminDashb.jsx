@@ -10,6 +10,7 @@ export default function AdminDashb() {
   );
 
   const getToken = () => localStorage.getItem("token");
+  //--------------------------------
   useEffect(() => {
     const fetchSummary = async () => {
       try {
@@ -35,7 +36,7 @@ export default function AdminDashb() {
     };
     fetchSummary();
   }, [filterDate, navigate]);
-
+  //-------------------------------------
   useEffect(() => {
     const fetchRecords = async () => {
       try {
@@ -52,7 +53,7 @@ export default function AdminDashb() {
     };
     fetchRecords();
   }, [filterDate, navigate]);
-
+  //-------------------------------------
   const downloadCSVad = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -81,7 +82,7 @@ export default function AdminDashb() {
       alert(err.message);
     }
   };
-
+  //------------------------------------
   return (
     <section className="relative h-screen justify-item-center">
       <div className="wave-section pointer-events-none relative -z-100">
